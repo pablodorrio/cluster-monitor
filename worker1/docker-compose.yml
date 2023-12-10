@@ -1,0 +1,18 @@
+version: "3.7"
+
+services:
+  node_exporter:
+    image: quay.io/prometheus/node-exporter:v1.2.2
+    container_name: node_exporter
+    command:
+      - '--path.rootfs=/host'
+    restart: unless-stopped
+    ports:
+      - "9100:9100"
+    volumes:
+      - '/proc:/host/proc:ro'
+      - '/sys:/host/sys:ro'
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://192.168.99.110:9100"
