@@ -2,6 +2,7 @@ version: "3.3"
 
 volumes:
   prometheus-data:
+  grafana-data:
 
 services:
   prometheus:
@@ -19,3 +20,12 @@ services:
     - '--storage.tsdb.retention.time=90d'
     - '--storage.tsdb.retention.size=100GB'
     - '--web.enable-lifecycle'
+  
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+    - 3000:3000
+    restart: unless-stopped
+    volumes:
+    - grafana-data:/var/lib/grafana
