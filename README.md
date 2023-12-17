@@ -20,7 +20,7 @@ docker-machine ssh worker2
 
 ```bash
 # Manager:
-docker swarm init --advertise-addr 192.168.99.118
+docker swarm init --advertise-addr <manager_IP>
 
 # Output of the command in the workers
 ```
@@ -33,11 +33,8 @@ mkdir -p $DOCKER_CONFIG/cli-plugins
 curl -SL https://github.com/docker/compose/releases/download/v2.23.3/docker-compose-linux-x86_64 -o $DOCKER_CONFIG/cli-plugins/docker-compose
 chmod +x $DOCKER_CONFIG/cli-plugins/docker-compose
 
-# Install loki (workers)
-wget https://raw.githubusercontent.com/grafana/loki/v2.9.1/cmd/loki/loki-local-config.yaml -O loki-config.yaml
-docker run --name loki -d -v $(pwd):/mnt/config -p 3100:3100 grafana/loki:2.9.1 -config.file=/mnt/config/loki-config.yaml
-wget https://raw.githubusercontent.com/grafana/loki/v2.9.1/clients/cmd/promtail/promtail-docker-config.yaml -O promtail-config.yaml
-docker run --name promtail -d -v $(pwd):/mnt/config -v /var/log:/var/log --link loki grafana/promtail:2.9.1 -config.file=/mnt/config/promtail-config.yaml
+# Install the Grafana Loki Docker Plugin: (workers)
+docker plugin install grafana/loki-docker-driver:latest --alias loki --grant-all-permissions
 ```
 ### Docker Compose
 
