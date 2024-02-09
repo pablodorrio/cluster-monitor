@@ -4,7 +4,7 @@ Docker Swarm cluster monitoring with Prometheus
 
 ## Setup
 
-### VMs
+### Creation and access to VMs
 
 ```bash
 docker-machine create manager
@@ -16,7 +16,7 @@ docker-machine ssh worker1
 docker-machine ssh worker2
 ```
 
-### Docker Swarm
+### Initialize the Docker Swarm Cluster
 
 ```bash
 # Manager:
@@ -25,20 +25,12 @@ docker swarm init --advertise-addr <manager_IP>
 # Output of the command in the workers
 ```
 
-### Installations
-```bash
-# Install docker compose (all nodes)
-DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
-mkdir -p $DOCKER_CONFIG/cli-plugins
-curl -SL https://github.com/docker/compose/releases/download/v2.23.3/docker-compose-linux-x86_64 -o $DOCKER_CONFIG/cli-plugins/docker-compose
-chmod +x $DOCKER_CONFIG/cli-plugins/docker-compose
-
-# Install the Grafana Loki Docker Plugin: (workers)
-docker plugin install grafana/loki-docker-driver:latest --alias loki --grant-all-permissions
-```
-### Docker Compose
+### Configuring and initializing monitoring
+- Duplicate the worker folder for the number of nodes you want (in the example there are two workers). 
+- Change the IP of the docker-compose.yml file in each worker to the IP of your manager.
+- Change the IPs of the prometheus.yml file in the manager to the IPs of your workers.
 
 ```bash
 # All nodes
-docker compose up -d
+./startup.sh
 ```
