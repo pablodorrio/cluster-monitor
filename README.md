@@ -1,6 +1,6 @@
 # Cluster Monitor
 
-Docker Swarm cluster monitoring with Prometheus
+Docker Swarm cluster monitoring with Prometheus and Grafana.
 
 ## Setup
 
